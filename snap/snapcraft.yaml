@@ -38,3 +38,6 @@ parts:
       - build-essential
     stage-packages:
       - imagemagick
+
+
+      
