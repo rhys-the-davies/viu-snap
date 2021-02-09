@@ -1,0 +1,40 @@
+name: viu # you probably want to 'snapcraft register <name>'
+base: core20 # the base snap is the execution environment for this snap
+adopt-info: viu
+summary: Simple terminal image viewer # 79 char long summary
+description: |
+  A small command-line application to view images from the terminal written
+  in Rust. It is basically the front-end of viuer. It uses either iTerm or
+  Kitty graphics protocol, if supported. If not, lower half blocks (▄ or 
+  \u2584) are displayed instead.
+
+grade: stable # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+
+architectures:
+  - build-on: amd64 
+  - build-on: arm64 
+  - build-on: armhf 
+  - build-on: i386 
+  - build-on: ppc64el 
+  - build-on: s390x
+
+apps:
+  viu:
+    command: bin/viu
+    plugs:
+      - network
+      - home
+      - removable-media
+
+parts:
+  viu:
+    plugin: rust 
+    source: https://github.com/atanunq/viu.git
+    override-pull: |
+      snapcraftctl pull
+      snapcraftctl set-version "$(git describe --tags)"
+    build-packages:
+      - build-essential
+    stage-packages:
+      - imagemagick
