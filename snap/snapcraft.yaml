@@ -1,4 +1,4 @@
-name: viu # you probably want to 'snapcraft register <name>'
+name: viu-image-viewer # you probably want to 'snapcraft register <name>'
 base: core20 # the base snap is the execution environment for this snap
 adopt-info: viu
 summary: Simple terminal image viewer # 79 char long summary
@@ -9,15 +9,13 @@ description: |
   \u2584) are displayed instead.
 
 grade: stable # must be 'stable' to release into candidate/stable channels
-confinement: devmode # use 'strict' once you have the right plugs and slots
+confinement: strict # use 'strict' once you have the right plugs and slots
 
 architectures:
   - build-on: amd64 
   - build-on: arm64 
-  - build-on: armhf 
-  - build-on: i386 
+  - build-on: armhf
   - build-on: ppc64el 
-  - build-on: s390x
 
 apps:
   viu:
@@ -26,6 +24,8 @@ apps:
       - network
       - home
       - removable-media
+      - alsa
+      - pulseaudio
 
 parts:
   viu:
@@ -36,6 +36,7 @@ parts:
       snapcraftctl set-version "$(git describe --tags)"
     build-packages:
       - build-essential
+      - libcanberra-dev
     stage-packages:
       - imagemagick
 
